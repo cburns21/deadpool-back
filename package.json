@@ -1,0 +1,26 @@
+{
+  "name": "deadpool_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cburns21/deadpoop-back.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cburns21/deadpoop-back/issues"
+  },
+  "homepage": "https://github.com/cburns21/deadpoop-back#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "knex": "^0.16.3",
+    "pg": "^7.9.0"
+  }
+}
