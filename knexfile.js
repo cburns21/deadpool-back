@@ -4,7 +4,7 @@ module.exports = {
 
   development: {
     client: 'pg',
-    connection: 'postgresql://localhost/deadpool_db'
+    connection: 'postgresql://localhost/deadpool'
   },
 
 
