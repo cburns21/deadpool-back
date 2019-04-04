@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
         table.integer('question2_response')
         table.boolean('question3_response')
         table.integer('player_id')
-        table.integer('character_id')
+        table.string('character_name')
         })
 };
 

@@ -17,7 +17,7 @@ app.post('/leagues', (req, res, next) => {
     });
 })
 
-app.get('/ballot', function(req, res, next){
+app.post('/ballot', function(req, res, next){
     return knex(' players')
         .join('responses', 'responses.player_id', 'players.id')
     .then((ballot) => {
@@ -28,15 +28,34 @@ app.get('/ballot', function(req, res, next){
     })
 })
 
-app.post('/ballot/leagues/:id', function(req, res, next){
-    knex('leagues').insert(req.body)
-    .then((rows) => {
-        res.send('Find your ballot on your league home page')
+app.post('/ballot1', function(req, res, next){
+    knex(' players')
+    .then((ballot) => {
+        res.send('Ballot Submitted')
     })
     .catch((err) => {
         next(err)
     })
 })
+
+app.post('/ballot2', function(req, res, next){
+    knex(' responses')
+    .then((ballot) => {
+        res.send('Ballot Submitted')
+    })
+    .catch((err) => {
+        next(err)
+    })
+})
+// app.post('/ballot/leagues', function(req, res, next){
+//     knex('leagues').insert(req.body)
+//     .then((rows) => {
+//         res.send('Find your ballot on your league home page')
+//     })
+//     .catch((err) => {
+//         next(err)
+//     })
+// })
 
 app.delete('/leagueName/:id', (req, res, next) => {
     knex('leagues')
