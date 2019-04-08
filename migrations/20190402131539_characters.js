@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
         table.boolean('question1_answer')
         table.integer('question2_answer')
         table.boolean('question3_answer')
+        table.string('picture')
     })
 };
 
