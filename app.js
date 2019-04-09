@@ -2,6 +2,12 @@ const express = require(`express`)
 const app = express()
 const port = process.env.PORT || 3000
 const knex = require('./knex')
+var cors = require('cors')
+var bodyParser = require('body-parser');
+const dotenv = require('dotenv').config()
+
+app.use(cors())
+app.use(bodyParser.json());
 
 app.get(`/`, function (req, res, next) {
     res.send(`hello world`)
@@ -17,37 +23,40 @@ app.post('/leagues', (req, res, next) => {
         });
 })
 
-app.post('/ballot', function (req, res, next) {
-    return knex(' players')
-        .join('responses', 'responses.player_id', 'players.id')
-        .then((ballot) => {
-            res.send(ballot)
-        })
-        .catch((err) => {
-            next(err)
-        })
-})
-
-app.post('/ballot1', function (req, res, next) {
-    knex(' players')
-        .then((ballot) => {
-            res.send('Ballot Submitted')
-        })
-        .catch((err) => {
-            next(err)
-        })
-})
-
-app.post('/ballot2', function (req, res, next) {
+app.get('/players/:league', (req, res, next) => {
     const result = {}
-    knex('responses')
-        .then((ballot) => {
-            res.send('Ballot Submitted')
-        })
-        .catch((err) => {
-            next(err)
-        })
+    knex('leagues')
+        .join('players', 'players.team_id', 'leagues.id')
+            .then(league => {
+                result.leaguePlayers = league
+                // return knex('leagues')
+                
+            })
+            res.send(result)
 })
+
+
+
+// app.post('/ballot1', function (req, res, next) {
+//     knex(' players')
+//         .then((ballot) => {
+//             res.send('Ballot Submitted')
+//         })
+//         .catch((err) => {
+//             next(err)
+//         })
+// })
+
+// app.post('/ballot2', function (req, res, next) {
+//     const result = {}
+//     knex('responses')
+//         .then((ballot) => {
+//             res.send('Ballot Submitted')
+//         })
+//         .catch((err) => {
+//             next(err)
+//         })
+// })
 
 app.get('/leagues/:name', function (req, res, next) {
     const result = {}
@@ -65,7 +74,6 @@ app.get('/leagues/:name', function (req, res, next) {
                     player.responses = responses
                     return player
                 })
-                console.log(player)
             })
             result.allPlayers = playersResponse 
             return Promise.all(playersResponse)
