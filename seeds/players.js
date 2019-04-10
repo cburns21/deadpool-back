@@ -44,6 +44,14 @@ exports.seed = function(knex, Promise) {
           bonus2answer: true,
           bonus3answer: 'Daenerys',
           bonus4answer: 'other'
+        },
+        {
+          name: 'Sarah', 
+          team_id: 2,
+          bonus1answer: true,
+          bonus2answer: true,
+          bonus3answer: 'Daenerys',
+          bonus4answer: 'other'
         }
       ]);
     });

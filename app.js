@@ -13,6 +13,16 @@ app.get(`/`, function (req, res, next) {
     res.send(`hello world`)
 })
 
+app.get('/leagues', (req, res, next) => {
+    knex('leagues')
+        .then((leagues) => {
+            res.send(leagues)
+        })
+        .catch((err) => {
+            next(err)
+        })
+})
+
 app.post('/leagues', (req, res, next) => {
     knex('leagues').insert(req.body)
         .then((leagueName) => {
@@ -26,37 +36,12 @@ app.post('/leagues', (req, res, next) => {
 app.get('/players/:league', (req, res, next) => {
     const result = {}
     knex('leagues')
-        .join('players', 'players.team_id', 'leagues.id')
-            .then(league => {
-                result.leaguePlayers = league
-                // return knex('leagues')
-                
-            })
-            res.send(result)
+    .where({'leagues.name': req.params.league})
+    .join('players', 'players.team_id', 'leagues.id')
+    .select('leagues.id', 'players.name')
+        .then((league) => res.send(league))
+
 })
-
-
-
-// app.post('/ballot1', function (req, res, next) {
-//     knex(' players')
-//         .then((ballot) => {
-//             res.send('Ballot Submitted')
-//         })
-//         .catch((err) => {
-//             next(err)
-//         })
-// })
-
-// app.post('/ballot2', function (req, res, next) {
-//     const result = {}
-//     knex('responses')
-//         .then((ballot) => {
-//             res.send('Ballot Submitted')
-//         })
-//         .catch((err) => {
-//             next(err)
-//         })
-// })
 
 app.get('/leagues/:name', function (req, res, next) {
     const result = {}
@@ -69,31 +54,20 @@ app.get('/leagues/:name', function (req, res, next) {
         })
         .then(players => {
             const playersResponse = players.map(player => {
-               return knex('responses').where({'player_id': player.id})
-                .then(responses => {
-                    player.responses = responses
-                    return player
-                })
+                return knex('responses').where({ 'player_id': player.id })
+                    .then(responses => {
+                        player.responses = responses
+                        return player
+                    })
             })
-            result.allPlayers = playersResponse 
+            result.allPlayers = playersResponse
             return Promise.all(playersResponse)
-        }) .then(mapResult => {
+        }).then(mapResult => {
             res.send(result)
         })
 
 })
 
-
-
-// app.post('/ballot/leagues', function(req, res, next){
-//     knex('leagues').insert(req.body)
-//     .then((rows) => {
-//         res.send('Find your ballot on your league home page')
-//     })
-//     .catch((err) => {
-//         next(err)
-//     })
-// })
 
 app.delete('/leagueName/:id', (req, res, next) => {
     knex('leagues')
