@@ -22,11 +22,12 @@ app.get('/leagues', (req, res, next) => {
             next(err)
         })
 })
-
 app.post('/leagues', (req, res, next) => {
     knex('leagues').insert(req.body)
         .then((leagueName) => {
-            res.send("League Created");
+            res.json({
+                message: "League Created"
+            });
         })
         .catch((err) => {
             next(err);
@@ -36,9 +37,9 @@ app.post('/leagues', (req, res, next) => {
 app.get('/players/:league', (req, res, next) => {
     const result = {}
     knex('leagues')
-    .where({'leagues.name': req.params.league})
-    .join('players', 'players.team_id', 'leagues.id')
-    .select('leagues.id', 'players.name')
+        .where({ 'leagues.name': req.params.league })
+        .join('players', 'players.team_id', 'leagues.id')
+        .select('leagues.id', 'players.name')
         .then((league) => res.send(league))
 
 })
